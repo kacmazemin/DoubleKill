@@ -9,6 +9,7 @@
 
 class USphereComponent;
 class UStaticMeshComponent;
+class UParticleSystem;
 
 UCLASS()
 class FPSGAME_API AFPSObjectiveActor : public AActor
@@ -28,9 +29,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USphereComponent* SphereComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	UParticleSystem* PickupFX;
+	
+	void PlayEffect();
 	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };
