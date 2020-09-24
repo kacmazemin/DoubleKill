@@ -19,6 +19,8 @@ ABlackHole::ABlackHole()
 	InnerSphereComp->SetSphereRadius(100);
 	InnerSphereComp->SetupAttachment(MeshComp);
 
+	InnerSphereComp->OnComponentBeginOverlap.AddDynamic(this, &ABlackHole::OverlapInnerSphere);
+
 	OuterSphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("OuterSphere"));
 	OuterSphereComp->SetSphereRadius(3000);
 	OuterSphereComp->SetupAttachment(MeshComp);
@@ -32,6 +34,7 @@ void ABlackHole::OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AA
 	if(OtherActor)
 	{
 		OtherActor->Destroy();
+		UE_LOG(LogTemp, Warning, TEXT("CAAAAAAAAAAAAA"));
 	}
 }
 
