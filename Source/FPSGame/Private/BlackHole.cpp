@@ -34,7 +34,6 @@ void ABlackHole::OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AA
 	if(OtherActor)
 	{
 		OtherActor->Destroy();
-		UE_LOG(LogTemp, Warning, TEXT("CAAAAAAAAAAAAA"));
 	}
 }
 
