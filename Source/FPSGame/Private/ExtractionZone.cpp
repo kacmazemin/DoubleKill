@@ -3,6 +3,7 @@
 
 #include "ExtractionZone.h"
 #include "Components/BoxComponent.h"
+#include "Components/DecalComponent.h"
 
 
 // Sets default values
@@ -19,6 +20,10 @@ AExtractionZone::AExtractionZone()
 	RootComponent = BoxComponent;
 
 	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AExtractionZone::HandleOverlap);
+
+	DecalComponent = CreateDefaultSubobject<UDecalComponent>(TEXT("DecalComponent"));
+	DecalComponent->DecalSize = FVector(200.f, 200.f, 200.0f );
+	DecalComponent->SetupAttachment(RootComponent);
 	
 }
 
