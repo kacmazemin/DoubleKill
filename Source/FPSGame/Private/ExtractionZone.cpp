@@ -7,6 +7,7 @@
 #include "FPSGameMode.h"
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -43,7 +44,12 @@ void AExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AA
 
 	AFPSCharacter* MyPawn = Cast<AFPSCharacter>(OtherActor);
 
-	if(MyPawn && MyPawn->bIsCarryingObject)
+	if(MyPawn ==  nullptr)
+	{
+		return;
+	}
+
+	if(MyPawn->bIsCarryingObject)
 	{
 		AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 		if(GM)
@@ -51,7 +57,10 @@ void AExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AA
 			GM->CompleteMission(MyPawn);
 		}
 	}
-	
+	else
+	{
+		UGameplayStatics::PlaySound2D(this, ObjectiveMissingSound);
+	}
 }
 
 // Called every frame
