@@ -2,6 +2,9 @@
 
 
 #include "ExtractionZone.h"
+
+#include "FPSCharacter.h"
+#include "FPSGameMode.h"
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
 
@@ -37,6 +40,17 @@ void AExtractionZone::BeginPlay()
 void AExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+
+	AFPSCharacter* MyPawn = Cast<AFPSCharacter>(OtherActor);
+
+	if(MyPawn && MyPawn->bIsCarryingObject)
+	{
+		AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+		if(GM)
+		{
+			GM->CompleteMission(MyPawn);
+		}
+	}
 	
 }
 
