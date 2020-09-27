@@ -54,17 +54,3 @@ void ALaunchPad::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	}
 }
 
-// Called when the game starts or when spawned
-void ALaunchPad::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void ALaunchPad::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	
-}
-
