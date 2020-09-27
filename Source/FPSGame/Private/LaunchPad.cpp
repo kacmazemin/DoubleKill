@@ -20,7 +20,7 @@ ALaunchPad::ALaunchPad()
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	BoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	BoxComponent->SetupAttachment(StaticMeshComponent);
-	BoxComponent->SetBoxExtent(FVector(100.f, 100.f, 100.f));
+	BoxComponent->SetBoxExtent(FVector(150.f, 150.f, 150.f));
 
 	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::HandleOverlap);
 
@@ -36,10 +36,11 @@ void ALaunchPad::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	LaunchDirection.Pitch += LaunchPitchAngle;
 	FVector LaunchVelocity = LaunchDirection.Vector() * LaunchStrength;
 
-	ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor);
+	ACharacter* Character = Cast<ACharacter>(OtherActor);
 	
-	if(OtherCharacter)
+	if(Character)
 	{
+		Character->LaunchCharacter(LaunchVelocity, true, true);
 		
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ActivateLaunchPadEffect, GetActorLocation());
 
