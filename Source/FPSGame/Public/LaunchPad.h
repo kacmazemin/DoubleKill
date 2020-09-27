@@ -29,7 +29,7 @@ protected:
 	UBoxComponent* BoxComponent;
 
 	UFUNCTION()
-	void HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	void LaunchPadOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	
 	UPROPERTY(EditInstanceOnly, Category = "LaunchPad")
 	float LaunchStrength;

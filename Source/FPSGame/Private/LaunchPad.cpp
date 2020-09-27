@@ -9,27 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-ALaunchPad::ALaunchPad()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	RootComponent = StaticMeshComponent;
-
-	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
-	BoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	BoxComponent->SetupAttachment(StaticMeshComponent);
-	BoxComponent->SetBoxExtent(FVector(150.f, 150.f, 150.f));
-
-	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::HandleOverlap);
-
-	LaunchStrength = 1500.f;
-	LaunchPitchAngle = 35.f;
-}
-
-void ALaunchPad::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ALaunchPad::LaunchPadOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
 	FRotator LaunchDirection = GetActorRotation();
@@ -54,3 +35,21 @@ void ALaunchPad::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	}
 }
 
+ALaunchPad::ALaunchPad()
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	RootComponent = StaticMeshComponent;
+
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	BoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BoxComponent->SetupAttachment(StaticMeshComponent);
+	BoxComponent->SetBoxExtent(FVector(150.f, 150.f, 150.f));
+
+	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::LaunchPadOverlap);
+
+	LaunchStrength = 1500.f;
+	LaunchPitchAngle = 35.f;
+}
