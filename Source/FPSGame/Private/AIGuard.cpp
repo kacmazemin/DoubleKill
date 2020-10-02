@@ -6,6 +6,7 @@
 
 #include "ChaosInterfaceWrapperCore.h"
 #include "DrawDebugHelpers.h"
+#include "FPSGameMode.h"
 #include "Perception/PawnSensingComponent.h"
 
 // Sets default values
@@ -35,7 +36,15 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 	{
 		return;
 	}
+
 	DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.0f, 12, FColor::Emerald, false, 10.f);
+
+	AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+		
+	if(GM)
+	{
+		GM->CompleteMission(SeenPawn, false);
+	}
 }
 
 void AAIGuard::OnHeardNoise(APawn* AIInstigator, const FVector& Location, float Volume)
