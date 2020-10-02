@@ -7,6 +7,14 @@
 
 #include "AIGuard.generated.h"
 
+UENUM(BlueprintType)
+enum class EAIGuardState : uint8
+{
+	Idle,
+	Suspicious,
+	Alerted
+
+};
 
 class UPawnSensingComponent;
 
@@ -38,6 +46,13 @@ protected:
 	void ResetOrientation();
 
 	FTimerHandle TimerHandle_ResetOrientation;
+
+	EAIGuardState GuardState;
+
+	void SetGuardState(const EAIGuardState& AIState);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void OnAIGuardStateChanged(EAIGuardState& AIState);
 	
 public:	
 	// Called every frame

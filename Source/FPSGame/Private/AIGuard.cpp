@@ -19,6 +19,8 @@ AAIGuard::AAIGuard()
 
 	PawnSensingComponent->OnSeePawn.AddDynamic(this, &AAIGuard::OnPawnSeen);
 	PawnSensingComponent->OnHearNoise.AddDynamic(this, &AAIGuard::OnHeardNoise);
+
+	GuardState = EAIGuardState::Idle;
 }
 
 // Called when the game starts or when spawned
@@ -45,10 +47,19 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 	{
 		GM->CompleteMission(SeenPawn, false);
 	}
+
+	SetGuardState(EAIGuardState::Alerted);
+
 }
 
 void AAIGuard::OnHeardNoise(APawn* AIInstigator, const FVector& Location, float Volume)
 {
+
+	if(GuardState == EAIGuardState::Alerted)
+	{
+		return;		
+	}
+	
 	DrawDebugSphere(GetWorld(), Location, 32.0f, 12, FColor::Red, false, 10.f);
 	
 	FVector Direction = Location - GetActorLocation();
@@ -62,9 +73,23 @@ void AAIGuard::OnHeardNoise(APawn* AIInstigator, const FVector& Location, float 
 
 	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrientation);
 	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AAIGuard::ResetOrientation, 3.0f);
+
+
+	SetGuardState(EAIGuardState::Suspicious);
 }
 
 
+void AAIGuard::SetGuardState(const EAIGuardState& AIState)
+{
+	if(AIState == GuardState)
+	{
+		return;	
+	}
+
+	GuardState = AIState;
+
+	OnAIGuardStateChanged(GuardState);
+}
 
 // Called every frame
 void AAIGuard::Tick(float DeltaTime)
@@ -82,5 +107,12 @@ void AAIGuard::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AAIGuard::ResetOrientation()
 {
+	if(GuardState == EAIGuardState::Alerted)
+	{
+		return;		
+	}
+	
 	SetActorRotation(InitialRotation);
+
+	SetGuardState(EAIGuardState::Idle);
 }
