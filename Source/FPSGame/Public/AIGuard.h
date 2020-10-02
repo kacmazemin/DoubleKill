@@ -47,12 +47,15 @@ protected:
 
 	FTimerHandle TimerHandle_ResetOrientation;
 
+
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+    void OnStateChanged(EAIGuardState AIState);
+	
 	EAIGuardState GuardState;
 
 	void SetGuardState(const EAIGuardState& AIState);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
-	void OnAIGuardStateChanged(EAIGuardState& AIState);
 	
 public:	
 	// Called every frame
