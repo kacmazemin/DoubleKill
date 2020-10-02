@@ -3,6 +3,8 @@
 
 #include "AIGuard.h"
 
+
+#include "ChaosInterfaceWrapperCore.h"
 #include "DrawDebugHelpers.h"
 #include "Perception/PawnSensingComponent.h"
 
@@ -22,6 +24,8 @@ AAIGuard::AAIGuard()
 void AAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitialRotation = GetActorRotation();
 	
 }
 
@@ -37,6 +41,18 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 void AAIGuard::OnHeardNoise(APawn* AIInstigator, const FVector& Location, float Volume)
 {
 	DrawDebugSphere(GetWorld(), Location, 32.0f, 12, FColor::Red, false, 10.f);
+	
+	FVector Direction = Location - GetActorLocation();
+
+	//same with FindLookAtRotation 
+	FRotator NewLookAt = FRotationMatrix::MakeFromX(Direction).Rotator();
+	NewLookAt.Pitch = 0.0f;
+	NewLookAt.Roll = 0.0f;
+	
+	SetActorRotation(NewLookAt);
+
+	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrientation);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AAIGuard::ResetOrientation, 3.0f);
 }
 
 
@@ -55,3 +71,7 @@ void AAIGuard::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AAIGuard::ResetOrientation()
+{
+	SetActorRotation(InitialRotation);
+}

@@ -31,6 +31,13 @@ protected:
 	
 	UFUNCTION()
 	void OnHeardNoise( APawn* AIInstigator, const FVector& Location, float Volume);
+
+	FRotator InitialRotation;
+
+	UFUNCTION()
+	void ResetOrientation();
+
+	FTimerHandle TimerHandle_ResetOrientation;
 	
 public:	
 	// Called every frame
