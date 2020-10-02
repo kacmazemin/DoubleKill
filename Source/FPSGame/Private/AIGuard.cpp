@@ -88,7 +88,7 @@ void AAIGuard::SetGuardState(const EAIGuardState& AIState)
 
 	GuardState = AIState;
 
-	OnAIGuardStateChanged(GuardState);
+	OnStateChanged(GuardState);
 }
 
 // Called every frame
