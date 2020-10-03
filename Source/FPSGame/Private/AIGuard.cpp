@@ -7,7 +7,9 @@
 #include "ChaosInterfaceWrapperCore.h"
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Engine/TargetPoint.h"
 
 // Sets default values
 AAIGuard::AAIGuard()
@@ -91,10 +93,31 @@ void AAIGuard::SetGuardState(const EAIGuardState& AIState)
 	OnStateChanged(GuardState);
 }
 
+void AAIGuard::MoveToNext()
+{
+	if(CurrentAIPatrolPoint == nullptr || CurrentAIPatrolPoint == SecondTargetPoint)
+	{
+		CurrentAIPatrolPoint = FirstTargetPoint;
+
+	}
+	else
+	{
+		CurrentAIPatrolPoint = SecondTargetPoint;
+	}
+	
+	UAIBlueprintHelperLibrary::SimpleMoveToActor(GetController(), CurrentAIPatrolPoint);
+	
+}
+
 // Called every frame
 void AAIGuard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if(bIsPatrolEnable)
+	{
+		MoveToNext();
+	}
 
 }
 

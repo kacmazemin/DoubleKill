@@ -31,6 +31,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "AISettings")
+	bool bIsPatrolEnable = false;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPawnSensingComponent* PawnSensingComponent;
 
@@ -47,7 +50,13 @@ protected:
 
 	FTimerHandle TimerHandle_ResetOrientation;
 
+	UPROPERTY(EditInstanceOnly, Category = "AISettings")
+	AActor* FirstTargetPoint;
 
+	UPROPERTY(EditInstanceOnly, Category = "AISettings")
+	AActor* SecondTargetPoint;
+	
+	AActor* CurrentAIPatrolPoint;
 	
 	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
     void OnStateChanged(EAIGuardState AIState);
@@ -56,6 +65,7 @@ protected:
 
 	void SetGuardState(const EAIGuardState& AIState);
 
+	void MoveToNext();
 	
 public:	
 	// Called every frame
