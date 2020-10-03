@@ -31,6 +31,11 @@ void AAIGuard::BeginPlay()
 	Super::BeginPlay();
 
 	InitialRotation = GetActorRotation();
+
+	if(bIsPatrolEnable)
+	{
+		MoveToNextPatrolPoint();
+	}
 	
 }
 
@@ -51,6 +56,12 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 	}
 
 	SetGuardState(EAIGuardState::Alerted);
+
+	AController* Controller = GetController();
+	if(Controller)
+	{
+		Controller->StopMovement();
+	}
 
 }
 
@@ -78,6 +89,12 @@ void AAIGuard::OnHeardNoise(APawn* AIInstigator, const FVector& Location, float 
 
 
 	SetGuardState(EAIGuardState::Suspicious);
+
+	AController* Controller = GetController();
+	if(Controller)
+	{
+		Controller->StopMovement();
+	}
 }
 
 
@@ -93,12 +110,11 @@ void AAIGuard::SetGuardState(const EAIGuardState& AIState)
 	OnStateChanged(GuardState);
 }
 
-void AAIGuard::MoveToNext()
+void AAIGuard::MoveToNextPatrolPoint()
 {
 	if(CurrentAIPatrolPoint == nullptr || CurrentAIPatrolPoint == SecondTargetPoint)
 	{
 		CurrentAIPatrolPoint = FirstTargetPoint;
-
 	}
 	else
 	{
@@ -114,11 +130,16 @@ void AAIGuard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(bIsPatrolEnable)
+	if(CurrentAIPatrolPoint)
 	{
-		MoveToNext();
-	}
+		FVector Delta = GetActorLocation() - CurrentAIPatrolPoint->GetActorLocation();
+		float DistanceToGoal = Delta.Size();
 
+		if(DistanceToGoal < 50)
+		{
+			MoveToNextPatrolPoint();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -138,4 +159,10 @@ void AAIGuard::ResetOrientation()
 	SetActorRotation(InitialRotation);
 
 	SetGuardState(EAIGuardState::Idle);
+
+	if(bIsPatrolEnable)
+	{
+		MoveToNextPatrolPoint();
+	}
+	
 }

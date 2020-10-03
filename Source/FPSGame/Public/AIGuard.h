@@ -65,7 +65,7 @@ protected:
 
 	void SetGuardState(const EAIGuardState& AIState);
 
-	void MoveToNext();
+	void MoveToNextPatrolPoint();
 	
 public:	
 	// Called every frame
