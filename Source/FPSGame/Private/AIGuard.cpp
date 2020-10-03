@@ -4,7 +4,6 @@
 #include "AIGuard.h"
 
 
-#include "ChaosInterfaceWrapperCore.h"
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
