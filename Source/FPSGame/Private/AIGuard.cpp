@@ -121,7 +121,6 @@ void AAIGuard::MoveToNextPatrolPoint()
 	}
 	
 	UAIBlueprintHelperLibrary::SimpleMoveToActor(GetController(), CurrentAIPatrolPoint);
-	
 }
 
 // Called every frame
@@ -131,10 +130,10 @@ void AAIGuard::Tick(float DeltaTime)
 
 	if(CurrentAIPatrolPoint)
 	{
-		FVector Delta = GetActorLocation() - CurrentAIPatrolPoint->GetActorLocation();
-		float DistanceToGoal = Delta.Size();
+		const FVector Delta = GetActorLocation() - CurrentAIPatrolPoint->GetActorLocation();
+		const float DistanceToGoal = Delta.Size();
 
-		if(DistanceToGoal < 50)
+		if(DistanceToGoal < 100)
 		{
 			MoveToNextPatrolPoint();
 		}

@@ -31,7 +31,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AISettings")
+	UPROPERTY(EditInstanceOnly, Category = "AISettings")
 	bool bIsPatrolEnable = false;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -50,10 +50,10 @@ protected:
 
 	FTimerHandle TimerHandle_ResetOrientation;
 
-	UPROPERTY(EditInstanceOnly, Category = "AISettings")
+	UPROPERTY(EditInstanceOnly, Category = "AISettings", meta = (EditCondition = "bIsPatrolEnable"))
 	AActor* FirstTargetPoint;
 
-	UPROPERTY(EditInstanceOnly, Category = "AISettings")
+	UPROPERTY(EditInstanceOnly, Category = "AISettings", meta = (EditCondition = "bIsPatrolEnable"))
 	AActor* SecondTargetPoint;
 	
 	AActor* CurrentAIPatrolPoint;
