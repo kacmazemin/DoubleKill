@@ -1,2 +1,2 @@
 # DoubleKill
-An Fps game with Unreal Engine 4
+A Stealth game with Unreal Engine 4
